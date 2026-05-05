@@ -1,3 +1,5 @@
+# NexFlow Platform Plan
+
 A unified platform that combines project management (like Azure Boards), source control & CI/CD insights (similar to Azure DevOps) and a full helpdesk ticketing system (like Zoho Desk), with improved UX, automation, and AI-powered suggestions.
 
 Architectural Design (Microservices-oriented)
