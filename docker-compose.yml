@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # Core Relational & Time-Series Data
+  nexflow-db:
+    image: timescale/timescaledb:latest-pg15
+    container_name: nexflow-db
+    environment:
+      - POSTGRES_DB=nexflow
+      - POSTGRES_PASSWORD=postgres_pass
+      - POSTGRES_USER=postgres
+    ports:
+      - "5432:5432"
+
+  # Real-time Events & Caching
+  nexflow-cache:
+    image: redis:latest
+    container_name: nexflow-cache
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+
+  # Global Search
+  nexflow-search:
+    image: elasticsearch:8.10.2
+    container_name: nexflow-search
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
