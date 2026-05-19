@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model projects {
+  id          String       @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name        String
+  key         String       @unique
+  description String?
+  created_at  DateTime?    @default(now()) @db.Timestamptz(6)
+  work_items  work_items[]
+}
+
+model work_items {
+  id             String       @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  project_id     String?      @db.Uuid
+  title          String
+  description    String?
+  item_type      String?      @db.VarChar(20)
+  item_status    String?      @default("New") @db.VarChar(20)
+  priority       Int?         @default(3)
+  parent_id      String?      @db.Uuid
+  assigned_to    String?      @db.Uuid
+  github_metadata Json?
+  created_at     DateTime?    @default(now()) @db.Timestamptz(6)
+  
+  projects       projects?    @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  parent         work_items?  @relation("WorkItemHierarchy", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children       work_items[] @relation("WorkItemHierarchy")
+}
