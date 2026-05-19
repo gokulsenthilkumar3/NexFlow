@@ -52,3 +52,7 @@ export interface Ticket {
   slaResolveAt?: Date;
   createdAt: Date;
 }
+
+export * from './guards/jwt-auth.guard';
+export * from './guards/roles.guard';
+export * from './guards/project-scope.guard';
