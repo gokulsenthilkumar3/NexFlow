@@ -1,0 +1,20 @@
+[project]
+name = "ai-orchestrator"
+version = "0.1.0"
+description = "AI Triage Orchestrator for NexFlow"
+authors = [
+    {name = "AI", email = "ai@example.com"}
+]
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn>=0.27.0",
+    "redis>=5.0.0",
+    "openai>=1.14.0",
+    "pydantic>=2.0.0"
+]
+readme = "README.md"
+requires-python = ">=3.9"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
