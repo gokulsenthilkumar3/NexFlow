@@ -1,9 +1,8 @@
 version: '3.8'
 
 services:
-  # Core Relational & Time-Series Data
   nexflow-db:
-    image: timescale/timescaledb:latest-pg15
+    image: postgres:16
     container_name: nexflow-db
     environment:
       - POSTGRES_DB=nexflow
@@ -11,16 +10,30 @@ services:
       - POSTGRES_USER=postgres
     ports:
       - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./apps/database/migrations:/docker-entrypoint-initdb.d
+      - ./apps/database/seed.sql:/docker-entrypoint-initdb.d/999_seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  # Real-time Events & Caching
   nexflow-cache:
-    image: redis:latest
+    image: redis:7-alpine
     container_name: nexflow-cache
     ports:
       - "6379:6379"
     command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  # Global Search
   nexflow-search:
     image: elasticsearch:8.10.2
     container_name: nexflow-search
@@ -29,3 +42,10 @@ services:
       - xpack.security.enabled=false
     ports:
       - "9200:9200"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
+volumes:
+  pgdata:
+  redisdata:
+  esdata:
