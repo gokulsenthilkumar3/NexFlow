@@ -1,0 +1,9 @@
+{
+  "name": "@nexflow/ui-kit",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

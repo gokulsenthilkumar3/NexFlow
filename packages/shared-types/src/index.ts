@@ -1,9 +1,3 @@
-// packages/shared-types/src/index.ts
-export * from './work-item';
-export * from './ticket';
-export * from './incident';
-
-// packages/shared-types/src/work-item.ts
 export enum WorkItemType {
   EPIC = 'EPIC',
   STORY = 'STORY',
@@ -25,7 +19,7 @@ export interface WorkItem {
   description: string;
   type: WorkItemType;
   status: WorkItemStatus;
-  priority: number;
+  priority: number; // 1-4
   projectId: string;
   parentItemId?: string;
   assignedTo?: string;
@@ -38,34 +32,23 @@ export interface WorkItem {
   updatedAt: Date;
 }
 
-// packages/shared-types/src/ticket.ts
-export enum TicketStatus {
-  OPEN = 'OPEN',
-  PENDING = 'PENDING',
-  RESOLVED = 'RESOLVED',
-  CLOSED = 'CLOSED'
+export enum SLAPriority {
+  CRITICAL = 'CRITICAL',
+  HIGH = 'HIGH',
+  MEDIUM = 'MEDIUM',
+  LOW = 'LOW'
 }
 
 export interface Ticket {
   id: string;
   subject: string;
-  content: string;
-  customerEmail: string;
-  status: TicketStatus;
-  priority: string;
+  description: string;
+  contactEmail: string;
+  priority: SLAPriority;
+  status: 'Open' | 'In Progress' | 'Resolved' | 'Closed';
   assignedAgentId?: string;
   linkedWorkItemId?: string;
-  slaDeadline: Date;
-  createdAt: Date;
-}
-
-// packages/shared-types/src/incident.ts
-export interface Incident {
-  id: string;
-  title: string;
-  severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
-  pipelineRunId?: string;
-  blastRadiusEstimate: any;
-  aiResolutionPlan?: string;
+  slaResponseAt?: Date;
+  slaResolveAt?: Date;
   createdAt: Date;
 }
