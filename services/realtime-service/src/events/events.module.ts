@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { EventsGateway } from './events.gateway';
 import { EventsService } from './events.service';
+import { RedisBridgeService } from './redis-bridge.service';
 
 @Module({
-  providers: [EventsGateway, EventsService],
+  imports: [ConfigModule],
+  providers: [EventsGateway, EventsService, RedisBridgeService],
 })
 export class EventsModule {}
+

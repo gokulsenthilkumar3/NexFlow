@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Models ────────────────────────────────────────────────────────────────────
+
+model kb_categories {
+  id         String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name       String
+  slug       String          @unique @db.VarChar(120)
+  parent_id  String?         @db.Uuid
+  created_at DateTime?       @default(now()) @db.Timestamptz(6)
+
+  parent     kb_categories?  @relation("CategoryTree", fields: [parent_id], references: [id])
+  children   kb_categories[] @relation("CategoryTree")
+  articles   kb_articles[]
+}
+
+model kb_articles {
+  id           String             @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title        String
+  slug         String             @unique @db.VarChar(200)
+  body         String             // MDX content stored as raw text
+  category_id  String?            @db.Uuid
+  author_id    String
+  published_at DateTime?          @db.Timestamptz(6)
+  version      Int                @default(1)
+  created_at   DateTime?          @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime?          @updatedAt @db.Timestamptz(6)
+
+  category     kb_categories?     @relation(fields: [category_id], references: [id])
+  versions     article_versions[]
+
+  // NOTE: Run this migration SQL after prisma migrate dev:
+  //   ALTER TABLE kb_articles ADD COLUMN IF NOT EXISTS search_vector tsvector
+  //     GENERATED ALWAYS AS (to_tsvector('english', coalesce(title,'') || ' ' || coalesce(body,''))) STORED;
+  //   CREATE INDEX IF NOT EXISTS idx_kb_articles_fts ON kb_articles USING GIN(search_vector);
+}
+
+model article_versions {
+  id             String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  article_id     String      @db.Uuid
+  body_snapshot  String
+  version_number Int
+  changed_by     String
+  created_at     DateTime?   @default(now()) @db.Timestamptz(6)
+
+  article        kb_articles @relation(fields: [article_id], references: [id], onDelete: Cascade)
+}

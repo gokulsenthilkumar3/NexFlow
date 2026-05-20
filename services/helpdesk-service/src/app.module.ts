@@ -4,6 +4,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TicketsModule } from './tickets/tickets.module';
+import { PortalModule } from './portal/portal.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { TicketsModule } from './tickets/tickets.module';
       inject: [ConfigService],
     }),
     TicketsModule,
+    PortalModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -77,6 +77,43 @@ class SummarizeTicketResponse(BaseModel):
     raw_llm_output: Optional[str] = None
 
 
+# ── Suggest KB articles ───────────────────────────────────────────────────────
+
+class KbArticleCandidate(BaseModel):
+    id: str
+    title: str
+    slug: str
+    excerpt: str = Field(..., max_length=500)
+
+
+class SuggestArticlesRequest(BaseModel):
+    ticket_id: str = Field(..., description="UUID of the helpdesk ticket")
+    ticket_subject: str = Field(..., min_length=1, max_length=512)
+    ticket_description: Optional[str] = Field(None, max_length=4096)
+    candidates: list[KbArticleCandidate] = Field(
+        ...,
+        description="KB article candidates pre-filtered by tsvector search (max 10)",
+        min_length=1,
+    )
+
+
+class RankedKbArticle(BaseModel):
+    id: str
+    title: str
+    slug: str
+    excerpt: str
+    relevance_score: float = Field(..., ge=0.0, le=1.0)
+    rationale: str = Field(..., description="One-sentence explanation of relevance")
+
+
+class SuggestArticlesResponse(BaseModel):
+    ticket_id: str
+    suggestions: list[RankedKbArticle] = Field(
+        ...,
+        description="Top-ranked articles, ordered by relevance_score descending (max 3)",
+    )
+
+
 # ── Health ────────────────────────────────────────────────────────────────────
 
 class HealthResponse(BaseModel):
