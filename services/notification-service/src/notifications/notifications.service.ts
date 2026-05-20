@@ -16,10 +16,14 @@ interface SmtpConfig {
   from?: string;
 }
 
+interface MailInfo {
+  messageId: string;
+}
+
 @Injectable()
 export class NotificationsService implements OnModuleInit {
   private readonly logger = new Logger(NotificationsService.name);
-  private transporter: nodemailer.Transporter;
+  private transporter!: nodemailer.Transporter;
 
   constructor(
     private readonly configService: ConfigService,
@@ -37,10 +41,6 @@ export class NotificationsService implements OnModuleInit {
     this.logger.log(`SMTP transport initialized -> ${smtp.host}:${smtp.port}`);
   }
 
-  /**
-   * Enqueue a notification for async delivery.
-   * Supports optional delay (e.g. SLA countdown).
-   */
   async enqueue(dto: SendNotificationDto): Promise<{ jobId: string }> {
     const job = await this.notifQueue.add('send', dto, {
       delay: dto.delayMs ?? 0,
@@ -53,22 +53,19 @@ export class NotificationsService implements OnModuleInit {
     return { jobId: String(job.id) };
   }
 
-  /**
-   * Send an email immediately (called by the processor).
-   */
   async sendEmail(dto: SendNotificationDto): Promise<void> {
     if (!dto.to) {
       this.logger.warn('sendEmail called without recipient - skipping');
       return;
     }
     const smtp = this.configService.get<SmtpConfig>('smtp') ?? ({} as SmtpConfig);
-    const info = await this.transporter.sendMail({
+    const info = (await this.transporter.sendMail({
       from: smtp.from,
       to: dto.to,
       subject: dto.subject ?? 'NexFlow Notification',
       text: dto.body,
       html: dto.htmlBody ?? `<p>${dto.body}</p>`,
-    });
-    this.logger.log(`Email sent to ${dto.to} - messageId: ${String(info.messageId)}`);
+    })) as MailInfo;
+    this.logger.log(`Email sent to ${dto.to} - messageId: ${info.messageId}`);
   }
 }
