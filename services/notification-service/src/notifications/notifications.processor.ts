@@ -16,40 +16,34 @@ export class NotificationsProcessor extends WorkerHost {
     super();
   }
 
-  async process(job: Job<SendNotificationDto, any, string>): Promise<any> {
+  async process(job: Job<SendNotificationDto, unknown, string>): Promise<{ status: string }> {
     this.logger.log(`Processing notification job ${job.id} (channel: ${job.data.channel})`);
-    
-    const { channel } = job.data;
 
+    const { channel } = job.data;
     if (channel === 'email' || channel === 'both') {
       try {
         await this.notificationsService.sendEmail(job.data);
-      } catch (err: any) {
-        this.logger.error(`Failed to send email for job ${job.id}: ${err.message}`);
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        this.logger.error(`Failed to send email for job ${job.id}: ${message}`);
         throw err; // BullMQ will retry
       }
     }
-
     if (channel === 'in-app' || channel === 'both') {
       try {
-        await this.sendInApp(job.data);
-      } catch (err: any) {
-        this.logger.error(`Failed to send in-app notification for job ${job.id}: ${err.message}`);
+        this.sendInApp(job.data);
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        this.logger.error(`Failed to send in-app notification for job ${job.id}: ${message}`);
         throw err;
       }
     }
-
     return { status: 'delivered' };
   }
 
-  private async sendInApp(data: SendNotificationDto): Promise<void> {
-    // For in-app, we would typically push this to the realtime-service or a database.
-    // For now, we'll simulate sending an HTTP request to the realtime-service (or just logging).
-    const realtimeUrl = this.configService.get<string>('realtimeServiceUrl');
+  private sendInApp(data: SendNotificationDto): void {
+    const realtimeUrl = this.configService.get<string>('realtimeServiceUrl') ?? 'http://localhost:3005';
     this.logger.log(`Simulating in-app push to ${realtimeUrl}... payload: ${JSON.stringify(data.metadata)}`);
-    // In a real scenario, we might use HTTP to call realtime-service API, or push to a Redis stream
-    // that realtime-service listens to. 
-    // Since we have Redis Streams setup in realtime-service (events:updates), we COULD push there
-    // but typically notifications are user-specific. We'll leave it as a log for this phase.
+    // In production: publish to Redis Stream events:updates or call realtime-service HTTP API
   }
 }
