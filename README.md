@@ -12,7 +12,6 @@ A full-stack monorepo combining project management, IT helpdesk, asset tracking,
 [![Next.js](https://img.shields.io/badge/Next.js-16.2-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org)
 [![Clerk](https://img.shields.io/badge/Auth-Clerk-purple?style=for-the-badge&logo=clerk)](https://clerk.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
 </div>
 
@@ -170,6 +169,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on branching, commit conve
 
 ---
 
-## 📄 License
+## © Copyright
 
-MIT © [Gokul Senthilkumar](https://github.com/gokulsenthilkumar3)
+All rights reserved. © [Gokul Senthilkumar](https://github.com/gokulsenthilkumar3)
