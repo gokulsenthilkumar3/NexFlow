@@ -54,7 +54,6 @@ export default function Dashboard() {
   const [activeNav, setActiveNav] = useState(0);
   const router = useRouter();
   
-  // ── Auth & Data Hooks ──
   const { user, isLoaded: isUserLoaded } = useUser();
   const { getToken } = useAuth();
   const queryClient = useQueryClient();
@@ -63,38 +62,31 @@ export default function Dashboard() {
   const { data: priorityTickets, isLoading: isLoadingTickets } = usePriorityTickets();
   const { data: aiInsights, isLoading: isLoadingAi } = useAiInsights();
 
-  // ── Socket.io Setup ──
   useEffect(() => {
     let mounted = true;
 
     async function initSocket() {
       const token = await getToken();
       if (!mounted) return;
-      
       const socket = getSocket(token);
-
       socket.on(SOCKET_EVENTS.WORK_ITEM_UPDATED, () => {
         queryClient.invalidateQueries({ queryKey: WORK_ITEM_KEYS.all });
       });
-
       socket.on(SOCKET_EVENTS.TICKET_UPDATED, () => {
         queryClient.invalidateQueries({ queryKey: TICKET_KEYS.all });
       });
-      
       socket.on(SOCKET_EVENTS.NOTIFICATION, (data) => {
         console.log("New Notification Received:", data);
       });
     }
 
     initSocket();
-
     return () => {
       mounted = false;
       disconnectSocket();
     };
   }, [getToken, queryClient]);
 
-  // ── Derived Data ──
   const kanbanCols = [
     { title: 'To Do', color: 'text-slate-400', dot: 'bg-slate-500', cards: workItems?.filter(w => w.status === 'NEW' || w.status === 'APPROVED') || [] },
     { title: 'In Progress', color: 'text-blue-400', dot: 'bg-blue-500', cards: workItems?.filter(w => w.status === 'COMMITTED') || [] },
@@ -150,7 +142,7 @@ export default function Dashboard() {
 
         <div className="mt-auto pt-4 border-t border-slate-800 space-y-1">
           <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-800/40">
-            <UserButton signOutUrl="/" appearance={{ elements: { userButtonAvatarBox: 'w-8 h-8' } }} />
+            <UserButton appearance={{ elements: { userButtonAvatarBox: 'w-8 h-8' } }} />
             <div className="flex flex-col overflow-hidden">
               {isUserLoaded ? (
                 <>
@@ -167,8 +159,6 @@ export default function Dashboard() {
 
       {/* ── Main ── */}
       <main className="flex-1 flex flex-col overflow-hidden">
-
-        {/* Header */}
         <header className="h-16 shrink-0 border-b border-slate-800 flex items-center justify-between px-8 bg-slate-900/30 backdrop-blur-md">
           <div className="relative w-80">
             <Icon d={icons.search} size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
@@ -193,14 +183,11 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* Content */}
         <div className="flex-1 overflow-y-auto scrollbar-hide p-8 space-y-8">
-          
           <div className="flex items-center justify-between">
             <h1 className="text-3xl font-black tracking-tight">System Health</h1>
           </div>
 
-          {/* Stats Row */}
           <div className="grid grid-cols-4 gap-5">
             {stats.map((s, i) => (
               <div key={i} className="glass-card rounded-2xl p-5 hover:border-slate-600 transition-all group">
@@ -217,15 +204,11 @@ export default function Dashboard() {
             ))}
           </div>
 
-          {/* Middle Row: Kanban + Side panels */}
           <div className="grid grid-cols-12 gap-6">
-
-            {/* Kanban */}
             <div className="col-span-8 glass-card rounded-2xl p-6 flex flex-col min-h-[400px]">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-bold text-lg">Active Sprint — Real-time Work Items</h2>
               </div>
-              
               {isLoadingWorkItems ? (
                 <div className="flex-1 flex items-center justify-center"><LoadingSpinner /></div>
               ) : (
@@ -255,9 +238,7 @@ export default function Dashboard() {
               )}
             </div>
 
-            {/* Right Column */}
             <div className="col-span-4 space-y-5">
-              {/* Priority Tickets */}
               <div className="glass-card rounded-2xl p-5 min-h-[250px]">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-bold text-sm">Priority Tickets</h3>
@@ -278,8 +259,7 @@ export default function Dashboard() {
                   </div>
                 )}
               </div>
-              
-              {/* AI Copilot */}
+
               <div className="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border border-indigo-500/30 rounded-2xl p-5 shadow-[0_0_50px_-12px_rgba(79,70,229,0.4)] min-h-[200px]">
                 <div className="flex items-center gap-2.5 mb-4">
                   <span className="text-2xl">✨</span>
