@@ -1,12 +1,16 @@
--- Migration 006: Asset Management Tables
+-- Step 1: Drop old assets table from migration 003
+DROP TABLE IF EXISTS assets CASCADE;
+DROP TYPE IF EXISTS asset_status CASCADE;
 
+-- Step 2: Re-create asset_categories (safe if already exists)
 CREATE TABLE IF NOT EXISTS asset_categories (
   id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name       VARCHAR(120) NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS assets (
+-- Step 3: Re-create assets with correct schema
+CREATE TABLE assets (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name          VARCHAR(255) NOT NULL,
   tag           VARCHAR(100) UNIQUE NOT NULL,
@@ -23,6 +27,7 @@ CREATE TABLE IF NOT EXISTS assets (
   updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- Step 4: Re-create asset_assignments (CASCADE dropped it above)
 CREATE TABLE IF NOT EXISTS asset_assignments (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   asset_id    UUID NOT NULL REFERENCES assets(id) ON DELETE CASCADE,
@@ -33,6 +38,7 @@ CREATE TABLE IF NOT EXISTS asset_assignments (
   notes       TEXT
 );
 
+-- Step 5: Re-create audit logs
 CREATE TABLE IF NOT EXISTS asset_audit_logs (
   id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   asset_id   UUID NOT NULL REFERENCES assets(id) ON DELETE CASCADE,
@@ -43,6 +49,7 @@ CREATE TABLE IF NOT EXISTS asset_audit_logs (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- Step 6: Indexes
 CREATE INDEX IF NOT EXISTS idx_assets_status        ON assets(status);
 CREATE INDEX IF NOT EXISTS idx_assets_category      ON assets(category_id);
 CREATE INDEX IF NOT EXISTS idx_assignments_asset    ON asset_assignments(asset_id);
