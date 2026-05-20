@@ -73,7 +73,6 @@ export default function Dashboard() {
       
       const socket = getSocket(token);
 
-      // Listen for WebSocket events and invalidate queries to refetch instantly
       socket.on(SOCKET_EVENTS.WORK_ITEM_UPDATED, () => {
         queryClient.invalidateQueries({ queryKey: WORK_ITEM_KEYS.all });
       });
@@ -84,7 +83,6 @@ export default function Dashboard() {
       
       socket.on(SOCKET_EVENTS.NOTIFICATION, (data) => {
         console.log("New Notification Received:", data);
-        // You could trigger a toast notification here
       });
     }
 
@@ -97,7 +95,6 @@ export default function Dashboard() {
   }, [getToken, queryClient]);
 
   // ── Derived Data ──
-  // Group work items into columns for Kanban
   const kanbanCols = [
     { title: 'To Do', color: 'text-slate-400', dot: 'bg-slate-500', cards: workItems?.filter(w => w.status === 'NEW' || w.status === 'APPROVED') || [] },
     { title: 'In Progress', color: 'text-blue-400', dot: 'bg-blue-500', cards: workItems?.filter(w => w.status === 'COMMITTED') || [] },
@@ -149,12 +146,11 @@ export default function Dashboard() {
               <span className="text-sm font-medium">{item.label}</span>
             </button>
           ))}
-
         </nav>
 
         <div className="mt-auto pt-4 border-t border-slate-800 space-y-1">
           <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-800/40">
-            <UserButton afterSignOutUrl="/" appearance={{ elements: { userButtonAvatarBox: 'w-8 h-8' } }} />
+            <UserButton signOutUrl="/" appearance={{ elements: { userButtonAvatarBox: 'w-8 h-8' } }} />
             <div className="flex flex-col overflow-hidden">
               {isUserLoaded ? (
                 <>
