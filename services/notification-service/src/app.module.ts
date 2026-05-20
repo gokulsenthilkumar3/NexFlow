@@ -13,7 +13,7 @@ import { NotificationsModule } from './notifications/notifications.module';
     }),
     BullModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         connection: {
           host: configService.get<string>('redis.host'),
           port: configService.get<number>('redis.port'),
