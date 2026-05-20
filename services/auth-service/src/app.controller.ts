@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Body, Headers, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Headers, UnauthorizedException, UseGuards, Req } from '@nestjs/common';
 import { AppService } from './app.service';
+import { JwtAuthGuard } from '@nexflow/shared-types';
 
 @Controller('auth')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get('me')
-  getMe(@Headers('x-user-id') userId: string) {
-    return this.appService.getMe(userId);
+  getMe(@Req() req: any) {
+    return this.appService.getMe(req.user.sub); 
   }
 
   @Post('verify-token')
