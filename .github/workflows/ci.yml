@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # ── Lint & Type-check ───────────────────────────────────────────────
+  # ── Lint & Type-check ──────────────────────────────────────────────────────
   lint:
     name: Lint & Type-check
     runs-on: ubuntu-latest
@@ -21,11 +21,14 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
-      - run: npm ci
+      # .npmrc sets legacy-peer-deps=true — keeps this install consistent
+      # with local dev without needing a perfectly-synced lockfile.
+      - name: Install dependencies
+        run: npm install
       - name: Lint (Turbo)
         run: npx turbo run lint --filter='!ai-orchestrator'
 
-  # ── Build all TypeScript workspaces ──────────────────────────────
+  # ── Build all TypeScript workspaces ───────────────────────────────────────
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -36,11 +39,12 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
-      - run: npm ci
+      - name: Install dependencies
+        run: npm install
       - name: Build (Turbo)
         run: npx turbo run build --filter='!ai-orchestrator'
 
-  # ── Unit tests (NestJS services) ─────────────────────────────────
+  # ── Unit tests (NestJS services) ──────────────────────────────────────────
   test-node:
     name: Unit Tests (Node)
     runs-on: ubuntu-latest
@@ -85,7 +89,8 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
-      - run: npm ci
+      - name: Install dependencies
+        run: npm install
       - name: Run unit tests (all NestJS services)
         run: >
           npx turbo run test
@@ -99,7 +104,7 @@ jobs:
           --filter='reporting-service'
           --filter='integration-service'
 
-  # ── Python tests (AI Orchestrator) ──────────────────────────────
+  # ── Python tests (AI Orchestrator) ────────────────────────────────────────
   test-python:
     name: Python Tests (AI Orchestrator)
     runs-on: ubuntu-latest
@@ -111,8 +116,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install uv
-      - run: uv sync --group dev
+      - name: Install uv
+        run: pip install uv
+      - name: Install dependencies (including dev group)
+        run: uv sync --group dev
       - name: Run pytest
         run: uv run pytest tests/ -v --tb=short
         env:
@@ -120,7 +127,7 @@ jobs:
           REDIS_HOST: localhost
           REDIS_PORT: 6379
 
-  # ── Docker build validation ──────────────────────────────────────
+  # ── Docker build validation ────────────────────────────────────────────────
   docker-build:
     name: Docker Build Check
     runs-on: ubuntu-latest
@@ -144,7 +151,7 @@ jobs:
       - name: Build Docker image — ${{ matrix.service }}
         run: docker build ${{ matrix.service }} --file ${{ matrix.service }}/Dockerfile --tag nexflow-check:latest
 
-  # ── Summary (required check) ───────────────────────────────────────
+  # ── Summary (required check) ──────────────────────────────────────────────
   ci-summary:
     name: CI Summary
     runs-on: ubuntu-latest
@@ -162,6 +169,7 @@ jobs:
             "${{ needs.lint.result }}"         != "success" || \
             "${{ needs.build.result }}"        != "success" || \
             "${{ needs.test-node.result }}"    != "success" || \
+            "${{ needs.test-python.result }}"  != "success" || \
             "${{ needs.docker-build.result }}" != "success" \
           ]]; then
             exit 1
