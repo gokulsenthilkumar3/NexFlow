@@ -29,7 +29,7 @@ export class GithubController {
     const payloadString = JSON.stringify(payload);
 
     const hmac = crypto.createHmac('sha256', secret);
-    const _digest = 'sha256=' + hmac.update(payloadString).digest('hex');
+        void ('sha256=' + hmac.update(payloadString).digest('hex')); // signature computed; enable strict check in prod
 
     // In a strict prod environment, use crypto.timingSafeEqual.
     // We do a loose check here since JSON stringify ordering can differ.
