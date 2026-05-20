@@ -56,10 +56,16 @@ class TestSettings:
         s = self._make(redis_password="secret")
         assert s.redis_password == "secret"
 
-    def test_openai_key_required(self):
-        """Settings must reject construction without OPENAI_API_KEY."""
+    def test_openai_key_required(self, monkeypatch):
+        """Settings must reject construction without OPENAI_API_KEY.
+
+        Uses monkeypatch to remove any OPENAI_API_KEY that the CI runner
+        may have injected via environment variables, so pydantic-settings
+        cannot fall back to it and the ValidationError is reliably raised.
+        """
+        monkeypatch.delenv("OPENAI_API_KEY", raising=False)
         with pytest.raises((ValidationError, Exception)):
-            Settings()  # no openai_api_key in env
+            Settings()  # no openai_api_key in env or kwargs
 
     def test_openai_key_stored(self):
         s = self._make(openai_api_key="sk-abc123")

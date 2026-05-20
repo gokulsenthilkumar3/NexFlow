@@ -1,6 +1,31 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { RedisService } from '../redis/redis.service';
 
+interface PushCommit {
+  id: string;
+  message: string;
+  author: { username: string };
+  url: string;
+}
+
+interface PushPayload {
+  commits?: PushCommit[];
+}
+
+interface PullRequest {
+  id: number;
+  number: number;
+  title: string;
+  body?: string;
+  html_url: string;
+  merged?: boolean;
+}
+
+interface PullRequestPayload {
+  action: string;
+  pull_request: PullRequest;
+}
+
 @Injectable()
 export class GithubService {
   private readonly logger = new Logger(GithubService.name);
@@ -11,23 +36,23 @@ export class GithubService {
    * Processes a generic GitHub webhook payload.
    * Parses commits and PR descriptions looking for "Fixes #T-102" or "NF-45".
    */
-  async processWebhook(event: string, payload: any) {
+  async processWebhook(event: string, payload: Record<string, unknown>) {
     this.logger.log(`Received GitHub event: ${event}`);
 
     switch (event) {
       case 'push':
-        await this.handlePush(payload);
+        await this.handlePush(payload as unknown as PushPayload);
         break;
       case 'pull_request':
-        await this.handlePullRequest(payload);
+        await this.handlePullRequest(payload as unknown as PullRequestPayload);
         break;
       default:
         this.logger.log(`Ignoring unhandled event type: ${event}`);
     }
   }
 
-  private async handlePush(payload: any) {
-    const commits = payload.commits || [];
+  private async handlePush(payload: PushPayload) {
+    const commits = payload.commits ?? [];
     for (const commit of commits) {
       const ticketRefs = this.extractReferences(commit.message);
       if (ticketRefs.length > 0) {
@@ -42,12 +67,11 @@ export class GithubService {
     }
   }
 
-  private async handlePullRequest(payload: any) {
-    const action = payload.action;
-    const pr = payload.pull_request;
-    
+  private async handlePullRequest(payload: PullRequestPayload) {
+    const { action, pull_request: pr } = payload;
+
     // Combine title and body to search for ticket refs (e.g., "Resolves #NF-45")
-    const searchString = `${pr.title} ${pr.body || ''}`;
+    const searchString = `${pr.title} ${pr.body ?? ''}`;
     const ticketRefs = this.extractReferences(searchString);
 
     if (ticketRefs.length > 0) {

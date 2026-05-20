@@ -138,11 +138,11 @@ function NewItemModal({ projectId, onClose }: { projectId: string; onClose: () =
             <select
               id="new-item-type"
               value={type}
-              onChange={(e) => setType(e.target.value as any)}
+              onChange={(e) => setType(e.target.value as 'EPIC' | 'STORY' | 'TASK' | 'BUG')}
               className="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500"
             >
-              {['EPIC', 'STORY', 'TASK', 'BUG'].map((t) => (
-                <option key={t} value={t}>{TYPE_ICON[t]} {t}</option>
+              {(['EPIC', 'STORY', 'TASK', 'BUG'] as const).map((t) => (
+                <option key={t} value={t}>{`${TYPE_ICON[t] ?? '📝'} ${t}`}</option>
               ))}
             </select>
           </div>
