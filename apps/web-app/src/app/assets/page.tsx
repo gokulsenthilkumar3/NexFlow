@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAssets, useCreateAsset, type AssetCategory, type AssetStatus } from '@/hooks/useAssets';
+import { useAssets, useCreateAsset, type AssetCategory, type AssetStatus, type Asset } from '@/hooks/useAssets';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -116,7 +116,7 @@ export default function AssetsPage() {
 
   const isWarrantyExpired = (d?: string) => d ? new Date(d) < new Date() : false;
 
-  const currentAssignee = (asset: ReturnType<typeof useAssets>['data'][0]) =>
+  const currentAssignee = (asset: Asset) =>
     asset.assignments?.find((a: any) => !a.returned_at)?.user_id ?? '—';
 
   return (
