@@ -7,6 +7,15 @@ import { SendNotificationDto } from './dto/send-notification.dto';
 
 export const NOTIFICATION_QUEUE = 'notifications';
 
+interface SmtpConfig {
+  host: string;
+  port: number;
+  secure: boolean;
+  user?: string;
+  pass?: string;
+  from?: string;
+}
+
 @Injectable()
 export class NotificationsService implements OnModuleInit {
   private readonly logger = new Logger(NotificationsService.name);
@@ -18,14 +27,14 @@ export class NotificationsService implements OnModuleInit {
   ) {}
 
   onModuleInit() {
-    const smtp = this.configService.get('smtp');
+    const smtp = this.configService.get<SmtpConfig>('smtp') ?? ({} as SmtpConfig);
     this.transporter = nodemailer.createTransport({
       host: smtp.host,
       port: smtp.port,
       secure: smtp.secure,
       auth: smtp.user ? { user: smtp.user, pass: smtp.pass } : undefined,
     });
-    this.logger.log(`SMTP transport initialized → ${smtp.host}:${smtp.port}`);
+    this.logger.log(`SMTP transport initialized -> ${smtp.host}:${smtp.port}`);
   }
 
   /**
@@ -49,17 +58,17 @@ export class NotificationsService implements OnModuleInit {
    */
   async sendEmail(dto: SendNotificationDto): Promise<void> {
     if (!dto.to) {
-      this.logger.warn('sendEmail called without recipient — skipping');
+      this.logger.warn('sendEmail called without recipient - skipping');
       return;
     }
-    const from = this.configService.get<string>('smtp.from');
+    const smtp = this.configService.get<SmtpConfig>('smtp') ?? ({} as SmtpConfig);
     const info = await this.transporter.sendMail({
-      from,
+      from: smtp.from,
       to: dto.to,
       subject: dto.subject ?? 'NexFlow Notification',
       text: dto.body,
       html: dto.htmlBody ?? `<p>${dto.body}</p>`,
     });
-    this.logger.log(`Email sent to ${dto.to} — messageId: ${info.messageId}`);
+    this.logger.log(`Email sent to ${dto.to} - messageId: ${String(info.messageId)}`);
   }
 }
