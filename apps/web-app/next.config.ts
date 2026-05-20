@@ -1,10 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    turbo: {
-      root: '../../',
-    },
+  output: 'export',
+  trailingSlash: true,
+  turbopack: {
+    root: '../../',
   },
 };
 
