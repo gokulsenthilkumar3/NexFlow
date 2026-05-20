@@ -89,6 +89,22 @@ services:
       - nexflow-cache
       - nexflow-realtime
       - nexflow-notifications
+      - nexflow-integration
+    restart: unless-stopped
+
+  nexflow-integration:
+    build: ./services/integration-service
+    container_name: nexflow-integration
+    ports:
+      - "3005:3005"
+    environment:
+      - PORT=3005
+      - REDIS_HOST=nexflow-cache
+      - REDIS_PORT=6379
+      - GITHUB_WEBHOOK_SECRET=dev_secret
+    depends_on:
+      nexflow-cache:
+        condition: service_healthy
     restart: unless-stopped
 
 volumes:
