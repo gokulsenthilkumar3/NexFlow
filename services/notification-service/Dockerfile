@@ -1,22 +1,20 @@
-# Stage 1: Build
-FROM node:20-alpine AS builder
+FROM node:20-alpine AS base
 WORKDIR /app
+RUN corepack enable pnpm
 
-COPY package*.json ./
-RUN npm ci
+FROM base AS deps
+COPY package.json pnpm-lock.yaml* ./
+RUN pnpm install --frozen-lockfile
 
+FROM base AS builder
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
+RUN pnpm build
 
-# Stage 2: Production
-FROM node:20-alpine AS production
-WORKDIR /app
+FROM base AS runner
 ENV NODE_ENV=production
-
-COPY package*.json ./
-RUN npm ci --omit=dev
-
 COPY --from=builder /app/dist ./dist
-
-EXPOSE ${PORT:-3004}
-CMD ["node", "dist/main"]
+COPY --from=deps    /app/node_modules ./node_modules
+COPY package.json ./
+EXPOSE 3006
+CMD ["node", "dist/main.js"]
