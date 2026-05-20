@@ -1,6 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { WorkItemsService } from './work-items.service';
+import { JwtAuthGuard, ProjectScopeGuard } from '@nexflow/shared-types';
 
+@UseGuards(JwtAuthGuard, ProjectScopeGuard)
 @Controller('work-items')
 export class WorkItemsController {
   constructor(private readonly workItemsService: WorkItemsService) {}
