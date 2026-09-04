@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAssets, useCreateAsset, type AssetCategory, type AssetStatus, type Asset } from '@/hooks/useAssets';
+import { formatDate } from '@/lib/format';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -102,11 +103,12 @@ export default function AssetsPage() {
   const [search, setSearch] = useState('');
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
-  const { data: assets = [], isLoading } = useAssets({
+  const { data: rawAssets, isLoading, isError, refetch } = useAssets({
     status: statusFilter === 'All' ? undefined : statusFilter,
     category: categoryFilter || undefined,
     search: search || undefined,
   });
+  const assets = Array.isArray(rawAssets) ? rawAssets : [];
 
   // Compute stats
   const total = assets.length;
@@ -196,6 +198,11 @@ export default function AssetsPage() {
             <div className="p-8 space-y-3">
               {[1,2,3,4].map((i) => <div key={i} className="h-10 animate-pulse rounded-lg bg-slate-800/50" />)}
             </div>
+          ) : isError ? (
+            <div className="flex flex-col items-center justify-center py-16 text-slate-500">
+              <p className="text-sm text-red-300">Unable to load assets.</p>
+              <button onClick={() => refetch()} className="mt-3 rounded-lg bg-slate-800 px-3 py-1.5 text-xs text-slate-300 hover:bg-slate-700">Try again</button>
+            </div>
           ) : assets.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-slate-500">
               <span className="text-4xl mb-3">📦</span>
@@ -235,7 +242,7 @@ export default function AssetsPage() {
                     <td className="px-4 py-3 text-xs">
                       {asset.warranty_expiry ? (
                         <span className={isWarrantyExpired(asset.warranty_expiry) ? 'text-red-400' : 'text-green-400'}>
-                          {isWarrantyExpired(asset.warranty_expiry) ? '✗ Expired' : '✓ '}{new Date(asset.warranty_expiry).toLocaleDateString()}
+                          {isWarrantyExpired(asset.warranty_expiry) ? '✗ Expired' : '✓ '}{formatDate(asset.warranty_expiry)}
                         </span>
                       ) : <span className="text-slate-600">—</span>}
                     </td>

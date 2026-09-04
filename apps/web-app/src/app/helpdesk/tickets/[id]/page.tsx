@@ -4,6 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apiClient from '@/lib/api';
 import { Ticket, TICKET_KEYS } from '@/hooks/useTickets';
+import { formatDateTime } from '@/lib/format';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface AiSummaryResult {
@@ -290,7 +291,7 @@ export default function TicketDetailPage() {
                     { label: 'Status',        value: ticket.status },
                     { label: 'Priority',      value: ticket.priority },
                     { label: 'Contact Email', value: ticket.contactEmail ?? (ticket as any).contact_email },
-                    { label: 'Created',       value: new Date(ticket.createdAt ?? (ticket as any).created_at).toLocaleString() },
+                    { label: 'Created',       value: formatDateTime(ticket.createdAt ?? (ticket as any).created_at) },
                     { label: 'Assigned To',   value: ticket.assignedAgentId ?? 'Unassigned' },
                     { label: 'Linked Item',   value: ticket.linkedWorkItemId ? ticket.linkedWorkItemId.substring(0,8) : '—' },
                   ].map(({ label, value }) => (

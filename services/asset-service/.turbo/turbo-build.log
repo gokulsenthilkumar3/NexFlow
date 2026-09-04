@@ -1,0 +1,102 @@
+
+> asset-service@0.0.1 build
+> nest build
+
+[96msrc/assets/assets.service.ts[0m:[93m12[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'assets' does not exist on type 'PrismaService'.
+
+[7m12[0m     return this.prisma.assets.findMany({
+[7m  [0m [91m                       ~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m37[0m:[93m37[0m - [91merror[0m[90m TS2339: [0mProperty 'assets' does not exist on type 'PrismaService'.
+
+[7m37[0m     const asset = await this.prisma.assets.findUnique({
+[7m  [0m [91m                                    ~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m49[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'assets' does not exist on type 'PrismaService'.
+
+[7m49[0m     return this.prisma.assets.findMany({
+[7m  [0m [91m                       ~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m66[0m:[93m37[0m - [91merror[0m[90m TS2339: [0mProperty 'assets' does not exist on type 'PrismaService'.
+
+[7m66[0m     const asset = await this.prisma.assets.create({
+[7m  [0m [91m                                    ~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m81[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'assets' does not exist on type 'PrismaService'.
+
+[7m81[0m     await this.prisma.assets.update({
+[7m  [0m [91m                      ~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m87[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'asset_audit_logs' does not exist on type 'PrismaService'.
+
+[7m87[0m     await this.prisma.asset_audit_logs.create({
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m96[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'assets' does not exist on type 'PrismaService'.
+
+[7m96[0m     const updated = await this.prisma.assets.update({
+[7m  [0m [91m                                      ~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m105[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'asset_audit_logs' does not exist on type 'PrismaService'.
+
+[7m105[0m     await this.prisma.asset_audit_logs.create({
+[7m   [0m [91m                      ~~~~~~~~~~~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m117[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'asset_assignments' does not exist on type 'PrismaService'.
+
+Found 22 error(s).
+[7m117[0m     await this.prisma.asset_assignments.create({
+
+[7m   [0m [91m                      ~~~~~~~~~~~~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m120[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'assets' does not exist on type 'PrismaService'.
+
+[7m120[0m     await this.prisma.assets.update({ where: { id }, data: { status: 'Assigned' } });
+[7m   [0m [91m                      ~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m121[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'asset_audit_logs' does not exist on type 'PrismaService'.
+
+[7m121[0m     await this.prisma.asset_audit_logs.create({
+[7m   [0m [91m                      ~~~~~~~~~~~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m130[0m:[93m48[0m - [91merror[0m[90m TS2339: [0mProperty 'asset_assignments' does not exist on type 'PrismaService'.
+
+[7m130[0m     const activeAssignment = await this.prisma.asset_assignments.findFirst({
+[7m   [0m [91m                                               ~~~~~~~~~~~~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m135[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'asset_assignments' does not exist on type 'PrismaService'.
+
+[7m135[0m     await this.prisma.asset_assignments.update({
+[7m   [0m [91m                      ~~~~~~~~~~~~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m139[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'assets' does not exist on type 'PrismaService'.
+
+[7m139[0m     await this.prisma.assets.update({ where: { id }, data: { status: 'Available' } });
+[7m   [0m [91m                      ~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m140[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'asset_audit_logs' does not exist on type 'PrismaService'.
+
+[7m140[0m     await this.prisma.asset_audit_logs.create({
+[7m   [0m [91m                      ~~~~~~~~~~~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m149[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'assets' does not exist on type 'PrismaService'.
+
+[7m149[0m     await this.prisma.assets.update({ where: { id }, data: { status: 'Maintenance' } });
+[7m   [0m [91m                      ~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m150[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'asset_audit_logs' does not exist on type 'PrismaService'.
+
+[7m150[0m     await this.prisma.asset_audit_logs.create({
+[7m   [0m [91m                      ~~~~~~~~~~~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m160[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'assets' does not exist on type 'PrismaService'.
+
+[7m160[0m     await this.prisma.assets.update({ where: { id }, data: { status: 'Retired' } });
+[7m   [0m [91m                      ~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m161[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'asset_audit_logs' does not exist on type 'PrismaService'.
+
+[7m161[0m     await this.prisma.asset_audit_logs.create({
+[7m   [0m [91m                      ~~~~~~~~~~~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m169[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'assets' does not exist on type 'PrismaService'.
+
+[7m169[0m     await this.prisma.assets.update({ where: { id }, data: { linked_ticket_id: ticketId } });
+[7m   [0m [91m                      ~~~~~~[0m
+[96msrc/assets/assets.service.ts[0m:[93m170[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'asset_audit_logs' does not exist on type 'PrismaService'.
+
+[7m170[0m     await this.prisma.asset_audit_logs.create({
+[7m   [0m [91m                      ~~~~~~~~~~~~~~~~[0m
+[96msrc/audit/audit.service.ts[0m:[93m9[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'asset_audit_logs' does not exist on type 'PrismaService'.
+
+[7m9[0m     return this.prisma.asset_audit_logs.findMany({
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~[0m
+
+npm error Lifecycle script `build` failed with error:
+npm error code 1
+npm error path D:\Projects\NexFlow - Manager Helpdesk\services\asset-service
+npm error workspace asset-service@0.0.1
+npm error location D:\Projects\NexFlow - Manager Helpdesk\services\asset-service
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c nest build

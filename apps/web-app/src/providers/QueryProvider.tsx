@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState, type ReactNode } from 'react';
+import { OfflineStatus } from '@/components/OfflineStatus';
 
 /**
  * React Query provider for the NexFlow app.
@@ -35,6 +36,7 @@ export function QueryProvider({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
+      <OfflineStatus />
     </QueryClientProvider>
   );
 }

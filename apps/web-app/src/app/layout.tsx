@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from '@/lib/clerk-mock';
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/app/providers";
 import "./globals.css";
@@ -24,10 +25,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-slate-950 text-slate-100">
-        <Providers>{children}</Providers>
-      </body>
-    </html>
+    <ClerkProvider afterSignOutUrl="/">
+      <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+        <body className="min-h-full flex flex-col bg-slate-950 text-slate-100">
+          <Providers>{children}</Providers>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

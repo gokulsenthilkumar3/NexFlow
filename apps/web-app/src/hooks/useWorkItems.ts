@@ -26,6 +26,8 @@ export interface CreateWorkItemDto {
   description: string;
   type: WorkItemType;
   projectId: string;
+  /** 1 = CRITICAL, 2 = HIGH, 3 = MEDIUM, 4 = LOW */
+  priority?: number;
 }
 
 // ── Query Keys ────────────────────────────────────────────────────────────────

@@ -5,6 +5,7 @@ import { useWorkItems, WorkItem, useCreateWorkItem } from '@/hooks/useWorkItems'
 import apiClient from '@/lib/api';
 import { useQueryClient } from '@tanstack/react-query';
 import { WORK_ITEM_KEYS } from '@/hooks/useWorkItems';
+import { formatDate } from '@/lib/format';
 
 type SortKey = 'priority' | 'status' | 'title' | 'createdAt';
 type SortDir = 'asc' | 'desc';
@@ -201,7 +202,7 @@ export default function BacklogPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-[11px] text-slate-500">
-                      {new Date(item.createdAt).toLocaleDateString()}
+                      {formatDate(item.createdAt)}
                     </td>
                     <td className="px-6 py-4">
                       <select

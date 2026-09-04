@@ -27,6 +27,7 @@ export function getSocket(authToken?: string | null): Socket {
     transports: ['websocket', 'polling'],
     reconnectionAttempts: 5,
     reconnectionDelay: 2000,
+    autoConnect: false, // Disabled for local UI dev without backend to prevent console errors
   });
 
   socketInstance.on('connect', () => {

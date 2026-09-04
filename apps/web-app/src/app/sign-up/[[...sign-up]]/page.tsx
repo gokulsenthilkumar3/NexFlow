@@ -1,4 +1,4 @@
-import { SignUp } from '@clerk/nextjs';
+import { SignUp } from '@/lib/clerk-mock';
 
 /**
  * Clerk-hosted Sign-Up page for NexFlow.
