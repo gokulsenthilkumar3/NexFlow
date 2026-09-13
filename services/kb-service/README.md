@@ -1,6 +1,6 @@
-# Nexora integration-service
+# Nexora kb-service
 
-This microservice is responsible for Third-party webhooks (e.g., GitHub) within the Nexora ecosystem.
+This microservice is responsible for Knowledge base and articles within the Nexora ecosystem.
 
 ## Architecture
 - Built with NestJS.

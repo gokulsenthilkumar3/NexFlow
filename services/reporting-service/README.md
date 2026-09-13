@@ -1,6 +1,6 @@
-# Nexora integration-service
+# Nexora reporting-service
 
-This microservice is responsible for Third-party webhooks (e.g., GitHub) within the Nexora ecosystem.
+This microservice is responsible for Analytics and dashboards within the Nexora ecosystem.
 
 ## Architecture
 - Built with NestJS.

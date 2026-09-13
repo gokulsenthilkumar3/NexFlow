@@ -142,6 +142,18 @@ export interface AssetAuditLog {
   createdAt: Date;
 }
 
+// ─── People & Workplace ─────────────────────────────────────────────────────
+export type NexoraRole = 'ADMIN' | 'MANAGER' | 'USER';
+export interface Employee { id: string; clerkUserId?: string; email: string; fullName: string; employeeCode?: string; department?: string; designation?: string; managerId?: string; role: NexoraRole; isActive: boolean; createdAt: Date; updatedAt: Date; }
+export interface AttendanceLog { id: string; employeeId: string; workDate: Date; clockIn?: Date; clockOut?: Date; status: 'PRESENT' | 'ABSENT' | 'HALF_DAY' | 'LEAVE' | 'HOLIDAY' | 'WFH'; notes?: string; }
+export interface LeaveRequest { id: string; employeeId: string; leaveType: string; startDate: Date; endDate: Date; reason?: string; status: 'PENDING' | 'APPROVED' | 'REJECTED'; }
+export interface Payslip { id: string; employeeId: string; period: string; basicSalary: number; allowances: number; deductions: number; netAmount: number; status: string; }
+export interface JobPosting { id: string; title: string; department?: string; location?: string; status: string; }
+export interface Applicant { id: string; jobId: string; name: string; email: string; stage: string; }
+export interface WorkplaceBooking { id: string; resourceId: string; employeeId: string; startTime: Date; endTime: Date; purpose?: string; }
+export interface MaintenanceRecord { id: string; assetId: string; issueType: string; status: string; priority: string; scheduledDate?: Date; }
+export interface SyncRecord { id: string; entityType: string; sourceHrmsId: string; syncStatus: 'PENDING' | 'SYNCED' | 'CONFLICT' | 'FAILED'; sourceUpdatedAt?: Date; nexoraUpdatedAt?: Date; }
+
 // ─── Reporting ───────────────────────────────────────────────────────────────
 export type ReportQueryType =
   | 'WORK_ITEMS'

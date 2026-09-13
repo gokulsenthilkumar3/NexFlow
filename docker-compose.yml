@@ -107,6 +107,19 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  nexora-workplace:
+    build: ./services/workplace-service
+    container_name: nexora-workplace
+    ports:
+      - "3009:3009"
+    environment:
+      - PORT=3009
+      - DATABASE_URL=${DATABASE_URL:-postgresql://postgres:postgres_pass@nexflow-db:5432/nexflow}
+    depends_on:
+      nexflow-db:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
   pgdata:
   redisdata:

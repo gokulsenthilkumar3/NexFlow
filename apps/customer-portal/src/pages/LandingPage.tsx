@@ -40,24 +40,27 @@ export default function LandingPage() {
     <main className="max-w-4xl mx-auto px-6 py-16">
       {/* Hero */}
       <div className="text-center mb-16">
+        <div className="inline-flex items-center rounded-full bg-blue-50 px-4 py-1.5 text-sm font-semibold text-blue-700 mb-6">
+          One workspace for teams, facilities, assets, and support
+        </div>
         <h1 className="text-5xl font-bold text-slate-900 mb-4 tracking-tight">
-          Get Help, <span className="text-blue-600">Fast.</span>
+          Work moves better when <span className="text-blue-600">everything connects.</span>
         </h1>
         <p className="text-lg text-slate-500 mb-10 max-w-xl mx-auto leading-relaxed">
-          Submit support tickets, track their progress in real-time, and browse our knowledge base — all in one place.
+          Nexora brings daily office operations and IT service into one calm, intelligent workspace—so people can get help, manage resources, and keep work moving.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <button
-            onClick={() => nav('/submit')}
+            onClick={() => nav('/workspace')}
             className="rounded-xl bg-blue-600 px-8 py-3.5 text-base font-semibold text-white hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/30"
           >
-            Submit a Ticket
+            Open workspace
           </button>
           <button
-            onClick={() => nav('/track')}
+            onClick={() => nav('/submit')}
             className="rounded-xl border-2 border-slate-300 bg-white px-8 py-3.5 text-base font-semibold text-slate-700 hover:border-slate-400 hover:bg-slate-50 transition-colors"
           >
-            Track My Ticket
+            Get support
           </button>
         </div>
       </div>
@@ -66,18 +69,18 @@ export default function LandingPage() {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         <FeatureCard
           icon={<ClockIcon />}
-          title="Fast Response"
-          desc="Our team responds within minutes for critical issues, not days."
+          title="Support that knows context"
+          desc="Give employees a direct path to help, real-time updates, and answers that do not get lost."
         />
         <FeatureCard
           icon={<BellIcon />}
-          title="Real-time Updates"
-          desc="Get notified the moment your ticket status changes."
+          title="Operations in view"
+          desc="Coordinate assets, spaces, maintenance, and workplace requests from a shared picture."
         />
         <FeatureCard
           icon={<BookIcon />}
-          title="Knowledge Base"
-          desc="Browse hundreds of articles to solve common issues instantly."
+          title="A home for your team"
+          desc="Bring HR, attendance, procurement, and everyday office work into a single experience."
         />
       </div>
     </main>

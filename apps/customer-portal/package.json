@@ -1,5 +1,6 @@
 {
-  "name": "customer-portal",
+  "name": "nexora-workspace",
+  "description": "Employee-facing Nexora workspace portal for support and operations journeys.",
   "version": "0.1.0",
   "private": true,
   "type": "module",

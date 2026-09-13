@@ -1,174 +1,138 @@
-<div align="center">
+# Nexora
 
-<img src="image.png" alt="NexFlow Banner" width="100%" />
+> GitHub description: Unified HRMS, workplace operations, asset management, and helpdesk platform for people, places, assets, and support.
 
-# NexFlow
+Nexora is the combined product replacing the separate NexFlow helpdesk and Office Management / HRMS systems. It is designed to be the single operations workspace and primary system of record for People, Workplace, and Operations teams.
 
-**Unified DevOps & Helpdesk Platform**
+The goal is simple: employees, managers, HR, IT, facilities, finance, and operations should work from one application, one identity model, and one shared PostgreSQL data layer.
 
-A full-stack monorepo combining project management, IT helpdesk, asset tracking, knowledge base, SLA monitoring, and AI-powered insights — all in one platform.
+## What Is Merged
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-nexflow--sigma.vercel.app-black?style=for-the-badge&logo=vercel)](https://nexflow-sigma.vercel.app)
-[![Next.js](https://img.shields.io/badge/Next.js-16.2-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org)
-[![Clerk](https://img.shields.io/badge/Auth-Clerk-purple?style=for-the-badge&logo=clerk)](https://clerk.com)
+| Domain | Included capabilities |
+| --- | --- |
+| People | Employee directory, profiles, onboarding, offboarding, attendance, leave, payroll, payslips, recruitment, careers, training, performance, compliance, and HR reports |
+| Workplace | Assets, employee asset assignment, QR scanning, maintenance, facilities, visitors, room booking, desk booking, procurement, vendors, fleet, scanner, security, telemetry, and lifecycle tracking |
+| Operations | Existing projects, work items, helpdesk, tickets, knowledge base, notifications, analytics, reports, integrations, and AI insights |
+| Governance | Role-based access, audit records, source migration metadata, sync conflict records, and validation reporting |
 
-</div>
+## Product Structure
 
----
+```text
+apps/
+  web-app/                         # Main Nexora Next.js application
+  customer-portal/                 # Nexora Workspace portal
+  gateway/                         # API gateway routing to domain services
+  database/                        # Shared PostgreSQL schema and migrations
 
-## 🌐 Live Links
+services/
+  auth-service/                    # Authentication and authorization
+  asset-service/                   # Asset inventory and lifecycle management
+  helpdesk-service/                # Core ticket and support workflows
+  work-item-service/               # Project and task tracking
+  workplace-service/               # People, HRMS, facilities, procurement, maintenance, compliance, training, and workplace APIs
+  kb-service/                      # Knowledge base
+  notification-service/            # Email and real-time alerts
+  realtime-service/                # WebSocket events
+  reporting-service/               # Reporting and analytics
+  ai-orchestrator/                 # AI routing and insights
+  integration-service/             # External integrations
 
-| Service | URL | Status |
-|---------|-----|--------|
-| **Web App** | [nexflow-sigma.vercel.app](https://nexflow-sigma.vercel.app) | ✅ Live |
-| **GitHub** | [github.com/gokulsenthilkumar3/NexFlow](https://github.com/gokulsenthilkumar3/NexFlow) | ✅ Public |
-| **Vercel Dashboard** | [vercel.com/gokuls-projects-16278f90/nexflow](https://vercel.com/gokuls-projects-16278f90/nexflow) | ✅ Active |
+packages/
+  shared-types/                    # Shared Nexora TypeScript contracts
+  ui-kit/                          # Shared UI utilities
+  config/                          # Shared configuration
 
----
-
-## ✨ Features
-
-- 🗂 **Project Boards** — Kanban-style sprint boards with drag-and-drop work item management
-- 🎫 **Helpdesk Queue** — Priority-based ticket queue with SLA tracking and breach alerts
-- 📦 **Asset Management** — IT asset lifecycle tracking (assign, maintain, retire)
-- 📖 **Knowledge Base** — Categorized articles with full edit history
-- 📊 **SLA Analytics** — Real-time SLA compliance dashboard with charts
-- 📈 **Reports** — Bar, line, and pie chart reports across all modules
-- 🤖 **AI Copilot** — AI-powered insights surfaced directly on the dashboard
-- 🔔 **Live Sync** — Real-time updates via Socket.IO across all connected clients
-- 🔐 **Auth** — Clerk-powered authentication with sign-in/sign-up flows
-
----
-
-## 🏗 Architecture
-
-NexFlow is a **Turborepo monorepo** with clearly separated apps, services, and shared packages.
-
-```
-NexFlow/
-├── apps/
-│   └── web-app/          # Next.js 16 frontend (React 19, Tailwind 4)
-├── services/
-│   ├── auth-service/     # NestJS — Clerk webhook sync, user management
-│   ├── helpdesk-service/ # NestJS — Tickets, SLA, KB, comments
-│   ├── project-service/  # NestJS — Work items, sprints, boards
-│   └── asset-service/    # NestJS — Asset lifecycle management
-├── packages/
-│   ├── shared-types/     # Shared TypeScript interfaces across all services
-│   └── eslint-config/    # Shared ESLint rules
-├── functions/            # Firebase Cloud Functions (SSR wrapper)
-├── docker-compose.yml    # Local dev stack (Postgres, Redis)
-└── turbo.json            # Turborepo pipeline config
+Office Management System/
+  Office Management System/        # Legacy HRMS and office-management source kept for migration reference
 ```
 
----
+## Current Nexora Screens
 
-## 🛠 Tech Stack
+- `/dashboard` - unified operations overview
+- `/people` - People Operations workspace with directory, attendance, leave, recruitment, and payroll areas
+- `/workplace` - Workplace hub for assets, facilities, visitors, procurement, maintenance, scanner, security, and related modules
+- `/workplace/[module]` - module workspace pages for workplace domains
 
-| Layer | Technology |
-|-------|------------|
-| Frontend | Next.js 16, React 19, TypeScript, Tailwind CSS 4 |
-| Auth | Clerk (`@clerk/nextjs` v7) |
-| State | TanStack Query v5 |
-| Drag & Drop | `@dnd-kit/core` |
-| Charts | Recharts |
-| Real-time | Socket.IO client |
-| Backend | NestJS (per service) |
-| Database | PostgreSQL + Prisma |
-| Cache | Redis |
-| Deployment | Vercel (frontend), Firebase (functions) |
-| Monorepo | Turborepo |
+The legacy HRMS and Office Management source remains in the repository during transition so business logic, reports, and feature-specific workflows can be migrated safely.
 
----
+## API Direction
 
-## 🚀 Getting Started
+The gateway keeps the existing Nexora service routes and adds merged HRMS / workplace paths:
 
-### Prerequisites
+```text
+/api/people
+/api/attendance
+/api/payroll
+/api/recruitment
+/api/facilities
+/api/procurement
+/api/maintenance
+/api/compliance
+/api/training
+/api/performance
+/api/workplace
+```
+
+The merged service stack should use Clerk bearer tokens in production, map Clerk users to Nexora employee profiles by email, and enforce `ADMIN`, `MANAGER`, and `USER` permissions consistently.
+
+## Database And Migration
+
+The consolidated schema starts with:
+
+- Existing Nexora tables for helpdesk, assets, work items, knowledge base, reporting, and notifications
+- New People tables for employees, attendance, leave, payroll, recruitment, training, performance, and compliance
+- New Workplace tables for locations, rooms, desks, vendors, procurement, bookings, maintenance, audits, and sync metadata
+
+Migration notes live in [services/workplace-service/MIGRATION.md](services/workplace-service/MIGRATION.md).
+
+No HRMS connection strings, exports, payroll files, or employee data should be committed to this repository. The HRMS PostgreSQL source must be supplied through deployment secrets or an isolated dry-run environment.
+
+## Local Development
+
+Prerequisites:
 
 - Node.js 20+
-- Docker Desktop (for local Postgres + Redis)
-- A [Clerk](https://clerk.com) account
+- Docker Desktop for PostgreSQL, Redis, and local backend services
 
-### 1. Clone & Install
+Start the local stack from the repository root:
 
 ```bash
-git clone https://github.com/gokulsenthilkumar3/NexFlow.git
-cd NexFlow
 npm install
-```
-
-### 2. Configure Environment
-
-```bash
-cp .env.example .env.local
-```
-
-Edit `.env.local` and fill in:
-
-```env
-# Clerk
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
-CLERK_SECRET_KEY=sk_test_...
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-
-# Backend API
-NEXT_PUBLIC_API_URL=http://localhost:3001
-```
-
-### 3. Start Local Services
-
-```bash
-# Start Postgres + Redis via Docker
 docker-compose up -d
-
-# Start all apps and services
 npm run dev
 ```
 
-The web app will be available at **http://localhost:3000**.
+Useful local URLs:
 
-### 4. Build for Production
+- Nexora Web App: `http://localhost:3000`
+- Nexora Workspace Portal: `http://localhost:5173`
+- People Operations: `http://localhost:3000/people`
+- Workplace Operations: `http://localhost:3000/workplace`
+
+## Verification
+
+Use these checks while developing:
 
 ```bash
-cd apps/web-app
 npm run build
+npm run lint
+npm run test
 ```
 
----
+For the merge specifically, validate:
 
-## 📦 Deployment
+- People and Workplace screens render in the Next.js app
+- Gateway routes forward to the correct domain service
+- Database migrations apply cleanly to a restored development database
+- HRMS import dry-runs match source record counts before any live sync is enabled
+- Dual-sync conflicts are written to `sync_records` with Nexora treated as the authority
 
-### Frontend — Vercel
+## Rollout Status
 
-```bash
-cd apps/web-app
-vercel --prod
-```
+Nexora is now the product name and target architecture. The repository contains the merged UI direction, shared types, gateway route expansion, workplace service scaffold, and consolidated migration set.
 
-Add these environment variables in the [Vercel dashboard](https://vercel.com/gokuls-projects-16278f90/nexflow/settings/environment-variables):
+The remaining production steps are to connect the real HRMS PostgreSQL source, run import dry-runs, implement the temporary dual-sync worker, validate feature parity, and then retire the separate HRMS frontend and backend.
 
-```
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-CLERK_SECRET_KEY
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-NEXT_PUBLIC_API_URL
-```
+## Contributing
 
-### Backend Services — Render / Railway
-
-Each service inside `services/` is an independent NestJS app with its own `Dockerfile`. Deploy each to Render or Railway, then set `NEXT_PUBLIC_API_URL` in Vercel.
-
----
-
-## 🤝 Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on branching, commit conventions, and pull request standards.
-
----
-
-## © Copyright
-
-All rights reserved. © [Gokul Senthilkumar](https://github.com/gokulsenthilkumar3)
+See [CONTRIBUTING.md](CONTRIBUTING.md) for branch, commit, and pull-request conventions.

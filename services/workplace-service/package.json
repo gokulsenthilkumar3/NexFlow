@@ -1,0 +1,11 @@
+{
+  "name": "workplace-service",
+  "description": "Merged Nexora HRMS and workplace operations domain service.",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": { "build": "nest build", "dev": "nest start --watch", "start": "nest start" },
+  "dependencies": {
+    "@nestjs/common": "^11.0.1", "@nestjs/config": "^4.0.4", "@nestjs/core": "^11.0.1", "@nestjs/platform-express": "^11.0.1", "@prisma/client": "^5.10.2", "reflect-metadata": "^0.2.2", "rxjs": "^7.8.1"
+  },
+  "devDependencies": { "@nestjs/cli": "^11.0.0", "prisma": "^5.10.2", "typescript": "^5.7.3" }
+}

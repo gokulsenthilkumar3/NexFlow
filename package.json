@@ -1,5 +1,6 @@
 {
-  "name": "nexflow",
+  "name": "nexora",
+  "description": "Unified HRMS, workplace operations, asset management, and helpdesk platform.",
   "version": "1.0.0",
   "private": true,
   "packageManager": "npm@10.8.1",

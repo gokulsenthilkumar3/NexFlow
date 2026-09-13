@@ -1,5 +1,6 @@
 {
   "name": "web-app",
+  "description": "Main Nexora Next.js app for People, Workplace, and Operations.",
   "version": "0.1.0",
   "private": true,
   "scripts": {

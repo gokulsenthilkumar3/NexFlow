@@ -1,6 +1,6 @@
-# Nexora integration-service
+# Nexora asset-service
 
-This microservice is responsible for Third-party webhooks (e.g., GitHub) within the Nexora ecosystem.
+This microservice is responsible for Asset inventory and lifecycle management within the Nexora ecosystem.
 
 ## Architecture
 - Built with NestJS.

@@ -189,7 +189,10 @@ export default function Dashboard() {
 
         <div className="flex-1 overflow-y-auto scrollbar-hide p-4 sm:p-8 space-y-8">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-black tracking-tight">System Health</h1>
+            <div>
+              <p className="text-xs font-bold tracking-[0.18em] text-blue-400 uppercase">Nexora Workspace</p>
+              <h1 className="mt-1 text-3xl font-black tracking-tight">Operations overview</h1>
+            </div>
           </div>
 
           {/* Stats grid */}

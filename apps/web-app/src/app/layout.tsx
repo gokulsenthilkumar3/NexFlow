@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NexFlow Dashboard",
-  description: "Unified DevOps and Helpdesk platform",
+  title: "Nexora Workspace",
+  description: "Unified operations workspace for people, places, assets, and support",
 };
 
 export default function RootLayout({

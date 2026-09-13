@@ -13,12 +13,16 @@ const icons = {
   git:       'M6 3v12 M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M18 9a9 9 0 0 1-9 9',
   book:      'M4 19.5A2.5 2.5 0 0 1 6.5 17H20',
   analytics: 'M18 20V10 M12 20V4 M6 20v-6',
+  people:    'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75',
+  office:    'M3 21h18 M5 21V7l7-4 7 4v14 M9 21v-6h6v6 M9 10h.01 M15 10h.01',
 };
 
 export const NAV_ITEMS = [
   { icon: icons.dashboard, label: 'Overview',         href: '/dashboard' },
   { icon: icons.kanban,    label: 'Project Boards',   href: '/projects/DEFAULT/board' },
   { icon: icons.ticket,    label: 'Helpdesk Tickets', href: '/helpdesk/queue' },
+  { icon: icons.people,    label: 'People',           href: '/people' },
+  { icon: icons.office,    label: 'Workplace',        href: '/workplace' },
   { icon: icons.git,       label: 'Repo & Pipelines', href: '/integrations' },
   { icon: icons.book,      label: 'Knowledge Base',   href: '/helpdesk/kb' },
   { icon: icons.analytics, label: 'Analytics',        href: '/helpdesk/sla' },
@@ -91,7 +95,7 @@ export function AppSidebar({
           N
         </div>
         <span className="text-xl font-black">
-          Nex<span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Flow</span>
+          Nex<span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">ora</span>
         </span>
       </div>
 

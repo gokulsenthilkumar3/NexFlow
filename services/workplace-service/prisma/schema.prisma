@@ -1,0 +1,3 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+// SQL migrations in apps/database/migrations are the source of truth for this consolidated database.
